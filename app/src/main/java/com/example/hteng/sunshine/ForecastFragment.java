@@ -1,9 +1,11 @@
 package com.example.hteng.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,9 +30,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by hteng on 12/30/2014.
@@ -59,8 +59,7 @@ public class ForecastFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.action_refresh) {
-            FetchWeatherTask weatherTask = new FetchWeatherTask();
-            weatherTask.execute("94043");
+            updateWeather();
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -71,6 +70,7 @@ public class ForecastFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
+/*      // fake data for the listview test
         String[] forecastArray = {
                 "Today - Sunny - 88/63",
                 "Tomorrow - Foggy - 70/46",
@@ -82,7 +82,7 @@ public class ForecastFragment extends Fragment {
         };
 
         List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
-
+        */
         // initialize an adapter for dynamic display
         mForecastAdapter = new ArrayAdapter<String>(
                 // The current context
@@ -92,7 +92,7 @@ public class ForecastFragment extends Fragment {
                 // ID of the textview to populate,
                 R.id.list_item_forcast_textview,
                 // Forecast data
-                weekForecast);
+                new ArrayList<String>());
 
         // used to update the adapter if its item are changed
         // from the source code, this one is set true by default
@@ -123,6 +123,26 @@ public class ForecastFragment extends Fragment {
         return rootView;
     }
 
+
+    private void updateWeather(){
+
+        FetchWeatherTask weatherTask = new FetchWeatherTask();
+        //weatherTask.execute("94043");
+
+        // get the location settings from the preference
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        // if there is no value stored, then load the default value
+        String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+        weatherTask.execute(location);
+
+    }
+
+    // to make the weather update automatically star
+    @Override
+    public void onStart(){
+        super.onStart();
+        updateWeather();
+    }
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]> {
 
@@ -162,6 +182,7 @@ public class ForecastFragment extends Fragment {
                 final String UNITS_PARAM = "units";
                 final String DAYS_PARAM = "cnt";
 
+                // here inside params[0] is the postcode
                 Uri builtUri = Uri.parse(FORECAST_BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])
                         .appendQueryParameter(FORMAT_PARAM, format)

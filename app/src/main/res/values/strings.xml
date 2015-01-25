@@ -15,5 +15,6 @@
 
     <!-- Default postal code for location preference [CHAR LIMIT=NONE] -->
     <string name="pref_location_default" translatable="false">94043</string>
+    <string name="hello_world">Hello world!</string>
 
 </resources>
