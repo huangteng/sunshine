@@ -133,7 +133,12 @@ public class ForecastFragment extends Fragment {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
         // if there is no value stored, then load the default value
         String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
-        weatherTask.execute(location);
+        String unit = prefs.getString(getString(R.string.pref_temperature_key), getString(R.string.pref_temperature_default));
+        weatherTask.execute(location, unit);
+
+        String LOG_TAG = "UNIT";
+        Log.v(LOG_TAG, "current unit: " + unit);
+
 
     }
 
@@ -151,6 +156,9 @@ public class ForecastFragment extends Fragment {
         @Override
         protected String[] doInBackground(String... params) {
 
+            // for the input parameter, although there is only one parameter in AsyncTask (String in this case)
+            // but what is got here is an array, so it is need to use params[0] to get the first parameter value
+
             // if there is no zip code, nothing to look up
             if (params.length == 0) {
                 return null;
@@ -165,7 +173,10 @@ public class ForecastFragment extends Fragment {
             String forecastJsonStr = null;
 
             String format = "json";
-            String units = "metric";
+            //String units = "metric";
+            String units = params[1];
+
+
             int numDays = 7;
 
             try {

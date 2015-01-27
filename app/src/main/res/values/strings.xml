@@ -17,4 +17,19 @@
     <string name="pref_location_default" translatable="false">94043</string>
     <string name="hello_world">Hello world!</string>
 
+    <!-- Temperature unit selection preference list related -->
+    <string name="pref_temperature_key" translatable="false">tempUnit</string>
+    <string name="pref_temperature_label" translatable="false">temperature unit</string>
+    <string name="pref_temperature_default" translatable="false">Metric</string>
+    <string name="pref_temperature_dialogue_title" translatable="false">Temperature Unit</string>
+
+    <string-array name="pref_tempTypes_entries" translatable="false">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+    <string-array name="pref_syncConnectionTypes_values" translatable="false">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+
 </resources>
