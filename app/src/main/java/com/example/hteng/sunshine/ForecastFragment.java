@@ -111,7 +111,7 @@ public class ForecastFragment extends Fragment {
                 // use a toast message to check the response of click action on the list item
                 // Toast.makeText(getActivity(), forecast, Toast.LENGTH_SHORT).show();
 
-                // create an intent to launch the DetailActivity
+                // create an explicit intent to launch the DetailActivity
                 // getActivity() is a public method in class Fragment, it is used to return the Activity this fragment is currently associated with
                 Intent intent = new Intent(getActivity(), DetailActivity.class);
                 // add extended data to the intent

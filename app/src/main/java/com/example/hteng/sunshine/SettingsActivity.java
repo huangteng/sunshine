@@ -28,6 +28,7 @@ public class SettingsActivity extends PreferenceActivity
         // updated when the preference changes.
         // bind preference summary to location preference
         bindPreferenceSummaryToValue(findPreference(getString(R.string.pref_location_key)));
+
     }
 
     /**
